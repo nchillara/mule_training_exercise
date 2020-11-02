@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:java="http://www.mulesoft.org/schema/mule/java"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/java http://www.mulesoft.org/schema/mule/java/current/mule-java.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
+	<vm:config name="customers-queue" doc:name="VM Config" doc:id="e2247575-31fc-45b4-92cb-09d1a8baf22e" >
+		<vm:queues >
+			<vm:queue queueName="customers" maxOutstandingMessages="-1" queueType="PERSISTENT"/>
+		</vm:queues>
+	</vm:config>
+	<flow name="troubleshooting-exerciseFlow" doc:id="b82aa160-2833-4ffd-9639-37e459066fdc" >
+		<scheduler doc:name="Scheduler" doc:id="bc727480-5127-4818-822d-890329899ecc" >
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+		</scheduler>
+		<java:invoke-static doc:name="Retrieve Customers from DB" doc:id="cac5726c-43dd-4914-b5d7-c95f8824a287" class="com.support.RetrieveCustomersFromDB" method="retrieve()"/>
+		<vm:publish doc:name="Publish Customers" doc:id="fb56d4c4-d27a-4103-b879-f9118df38238" config-ref="customers-queue" sendCorrelationId="AUTO" queueName="customers"/>
+	
+</flow>
+	<flow name="troubleshooting-exerciseFlow1" doc:id="f6a44afe-798e-47f4-89b1-5e91593b67f0" >
+		<scheduler doc:name="Scheduler" doc:id="d9da61ca-6627-41c5-9956-8b55edc7e45a" >
+			<scheduling-strategy >
+				<fixed-frequency/>
+			</scheduling-strategy>
+		</scheduler>
+		<try doc:name="Try" doc:id="46e1563b-c715-4dc9-91e2-0430a97099be" >
+			<vm:consume queueName="customers" doc:name="Consume" doc:id="5037806b-cd59-4728-b86f-5de5d5a5a66e" config-ref="customers-queue" timeout="1"/>
+			<error-handler>
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a6f8b281-8e73-47bb-8b4d-3fc51d593fbe" type="ANY">
+					<logger level="INFO" doc:name="Logger" doc:id="81f0daaf-5b71-4b98-b034-a60b880ff7de" message="#[error.message]"/>
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<logger level="INFO" doc:name="Logger" doc:id="0af90207-4e98-4c91-ac00-b0646d0641a5" message="Consumed Customer!! #[payload]" />
+		<set-payload value='#[null]' doc:name="Set Payload" doc:id="65e50d84-876a-415b-8bba-a48d6b166950" />
+	</flow>
+
+</mule>
