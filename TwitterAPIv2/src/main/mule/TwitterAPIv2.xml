@@ -22,7 +22,7 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 	</http:request-config>
 	<configuration-properties doc:name="Configuration properties" doc:id="63f42b98-4b1f-43fc-9910-d9bf57ac869e" file="twitter.sandbox.properties" />
 	<flow name="twitterintegrationprojFlow" doc:id="37a1dfb3-28fa-41e4-be5f-a58f92a2e30d" >
-		<http:listener doc:name="Listener" doc:id="c8b5de10-ebf8-47b6-8c0e-22f9e0842dda" config-ref="HTTP_Listener_config" path="/mytweets" allowedMethods="GET"/>
+		<http:listener doc:name="Listener" doc:id="c8b5de10-ebf8-47b6-8c0e-22f9e0842dda" config-ref="HTTP_Listener_config" path="/recent_tweets" allowedMethods="GET"/>
 		<http:request method="GET" doc:name="SearchQuery" doc:id="952abfc5-e1ef-48e9-8b97-a651a0517882" config-ref="TwitterAPIv2Configuration" path="/2/tweets/search/recent">
 			<http:query-params ><![CDATA[#[output application/java
 ---
