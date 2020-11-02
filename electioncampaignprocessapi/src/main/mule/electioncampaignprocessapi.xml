@@ -16,7 +16,7 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 	<http:request-config name="Twitter_Request_configuration" doc:name="HTTP Request configuration" doc:id="2f88d673-cbdb-47e5-8006-49f6c6db08a0" >
 		<http:request-connection protocol="HTTPS" host="${twitter.api.host}" port="${twitter.api.port}">
 			<tls:context >
-				<tls:trust-store path="training_exercise_client_truststore.jks" password="training_exercise" type="jks" />
+				<tls:trust-store path="training_exercise_client_truststore.jks" password="training_exercise" type="jks" insecure="true"/>
 			</tls:context>
 		</http:request-connection>
 	</http:request-config>
