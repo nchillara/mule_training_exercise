@@ -17,7 +17,7 @@ http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/cu
 			</scheduling-strategy>
 		</scheduler>
 		<java:invoke-static doc:name="Retrieve Customers from DB" doc:id="cac5726c-43dd-4914-b5d7-c95f8824a287" class="com.support.RetrieveCustomersFromDB" method="retrieve()"/>
-		<vm:publish doc:name="Publish Customers" doc:id="fb56d4c4-d27a-4103-b879-f9118df38238" config-ref="customers-queue" sendCorrelationId="AUTO" queueName="customers"/>
+		<vm:publish doc:name="Publish Customers" doc:id="fb56d4c4-d27a-4103-b879-f9118df38238" config-ref="customers-queue" sendCorrelationId="AUTO" queueName="customers" timeout="10"/>
 	
 </flow>
 	<flow name="troubleshooting-exerciseFlow1" doc:id="f6a44afe-798e-47f4-89b1-5e91593b67f0" >
